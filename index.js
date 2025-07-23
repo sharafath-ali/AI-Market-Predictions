@@ -1,9 +1,12 @@
-import { dates } from './utils/dates'
-import OpenAI from 'openai'
+import { dates } from '/utils/dates'
+import OpenAI from "openai"
 import dotenv from 'dotenv'
 
 dotenv.config()
 
+const openai = new OpenAI({
+    apiKey: process.env.OPENAI_API_KEY,
+})
 
 const tickersArr = []
 
@@ -44,11 +47,9 @@ const apiMessage = document.getElementById('api-message')
 async function fetchStockData() {
     document.querySelector('.action-panel').style.display = 'none'
     loadingArea.style.display = 'flex'
-    console.log(tickersArr)
     try {
         const stockData = await Promise.all(tickersArr.map(async (ticker) => {
             const url = `https://api.polygon.io/v2/aggs/ticker/${ticker}/range/1/day/${dates.startDate}/${dates.endDate}?apiKey=${process.env.POLYGON_API_KEY}`
-            console.log(url)
             const response = await fetch(url)
             const data = await response.text()
             const status = await response.status
@@ -60,14 +61,48 @@ async function fetchStockData() {
             }
         }))
         fetchReport(stockData.join(''))
-    } catch(err) {
+    } catch (err) {
         loadingArea.innerText = 'There was an error fetching stock data.'
         console.error('error: ', err)
     }
 }
 
 async function fetchReport(data) {
-    /** AI goes here **/
+    console.log(data)
+    /** 
+     * Challenge:
+     * 1. Use the OpenAI API to generate a report advising 
+     * on whether to buy or sell the shares based on the data 
+     * that comes in as a parameter.
+     * 
+     * 🎁 See hint.md for help!
+     * 
+     * 🏆 Bonus points: use a try catch to handle errors.
+     * **/
+
+    const messages = [
+        {
+            role: 'system',
+            content: 'You are a helpful stock market expert. You will be given a list of stock data and you will need to advise on whether to buy or sell the shares based on the data.'
+        },
+        {
+            role: 'user',
+            content: data
+        }
+    ]
+
+    try {
+        const response = await openai.chat.completions.create({
+            model: 'gpt-4o-mini',
+            messages
+        })
+
+        console.log(response.choices[0].message.content)
+
+        renderReport(response.choices[0].message.content)
+    } catch (err) {
+        console.error('error: ', err)
+    }
 }
 
 function renderReport(output) {
