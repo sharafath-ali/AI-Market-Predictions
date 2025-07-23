@@ -83,7 +83,7 @@ async function fetchReport(data) {
     const messages = [
         {
             role: 'system',
-            content: 'You are a helpful stock market expert. You will be given a list of stock data and you will need to advise on whether to buy or sell the shares based on the data.'
+            content: 'You are a helpful stock market expert. Given data on share prices over the past 3 days, write a report of no more than 150 words describing the stocks performance and recommending whether to buy, hold or sell.'
         },
         {
             role: 'user',
@@ -96,8 +96,6 @@ async function fetchReport(data) {
             model: 'gpt-4o-mini',
             messages
         })
-
-        console.log(response.choices[0].message.content)
 
         renderReport(response.choices[0].message.content)
     } catch (err) {
