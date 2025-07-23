@@ -1,9 +1,9 @@
-import { dates } from '/utils/dates'
+import { dates } from './utils/dates'
 import OpenAI from 'openai'
+import dotenv from 'dotenv'
 
-const openai = new OpenAI(
-    apiKey: '1234567890'
-)
+dotenv.config()
+
 
 const tickersArr = []
 

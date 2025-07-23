@@ -8,7 +8,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "dotenv": "^17.2.0",
+    "openai": "^5.10.2",
     "vite": "latest"
   },
-  "devDependencies": {}
+  "type": "module"
 }
