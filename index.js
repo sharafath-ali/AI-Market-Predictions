@@ -1,4 +1,4 @@
-import { dates } from '/utils/dates'
+import { dates } from './utils/dates'
 import OpenAI from "openai"
 import dotenv from 'dotenv'
 
